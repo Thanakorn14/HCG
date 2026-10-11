@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}เข้าสู่ระบบ{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <section class="auth-hero">
+    <p class="eyebrow">HCG Form</p>
+    <h1>ระบบแบบฟอร์มออนไลน์<br>ที่ติดตามผลได้ทุกขั้นตอน</h1>
+    <p class="lead">กรอกแบบฟอร์ม ตรวจสอบสถานะการอนุมัติ และรับลิงก์ขั้นตอนถัดไปได้ในที่เดียว</p>
+    <ul class="feature-list">
+      <li><strong>กรอกง่าย</strong><span>รองรับทุกอุปกรณ์</span></li>
+      <li><strong>ติดตามสถานะ</strong><span>รู้ผลทันทีที่ตรวจสอบ</span></li>
+      <li><strong>ปลอดภัย</strong><span>ยืนยันตัวตนทุกบัญชี</span></li>
+    </ul>
+  </section>
+
+  <section class="auth-card glass">
+    <h2>เข้าสู่ระบบ</h2>
+    <p class="muted">เลือกวิธีเข้าสู่ระบบด้วยชื่อไอดีหรืออีเมล</p>
+    <form method="post" class="stack" autocomplete="on">
+      <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+      <div class="segmented" role="radiogroup">
+        <input type="radio" name="login_type" id="lt-user" value="username" {% if login_type == 'username' %}checked{% endif %}>
+        <label for="lt-user">ชื่อไอดี</label>
+        <input type="radio" name="login_type" id="lt-email" value="email" {% if login_type == 'email' %}checked{% endif %}>
+        <label for="lt-email">อีเมล</label>
+      </div>
+      <label class="field">
+        <span id="identifier-label">ชื่อไอดี</span>
+        <input type="text" name="identifier" id="identifier" value="{{ identifier }}" required>
+      </label>
+      <label class="field">
+        <span>รหัสผ่าน</span>
+        <input type="password" name="password" required autocomplete="current-password">
+      </label>
+      <button class="btn primary block" type="submit">เข้าสู่ระบบ</button>
+    </form>
+    <p class="muted center switch-link">ยังไม่มีบัญชี <a href="{{ url_for('register') }}">สร้างบัญชีใหม่</a></p>
+  </section>
+</div>
+<script>
+  (function () {
+    const input = document.getElementById("identifier");
+    const label = document.getElementById("identifier-label");
+    function sync() {
+      const isEmail = document.getElementById("lt-email").checked;
+      label.textContent = isEmail ? "อีเมล" : "ชื่อไอดี";
+      input.type = isEmail ? "email" : "text";
+      input.placeholder = isEmail ? "name@example.com" : "ชื่อไอดีของคุณ";
+      input.autocomplete = isEmail ? "email" : "username";
+    }
+    document.querySelectorAll("input[name=login_type]").forEach(r => r.addEventListener("change", sync));
+    sync();
+  })();
+</script>
+{% endblock %}
