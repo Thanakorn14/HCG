@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}สร้างบัญชี{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <section class="auth-hero">
+    <p class="eyebrow">HCG Form</p>
+    <h1>สร้างบัญชีใหม่</h1>
+    <p class="lead">กรอกข้อมูลให้ครบถ้วน และป้อนรหัสจากรูปภาพเพื่อยืนยันตัวตน</p>
+    <ul class="feature-list">
+      <li><strong>ชื่อไอดี</strong><span>4-20 ตัว ภาษาอังกฤษหรือตัวเลข</span></li>
+      <li><strong>รหัสผ่าน</strong><span>อย่างน้อย 8 ตัว มีตัวอักษรและตัวเลข</span></li>
+      <li><strong>ยืนยันตัวตน</strong><span>ป้อนรหัสจากรูปภาพ</span></li>
+    </ul>
+  </section>
+
+  <section class="auth-card glass">
+    <h2>สร้างบัญชี</h2>
+    <form method="post" class="stack" autocomplete="off">
+      <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+      <label class="field">
+        <span>ชื่อไอดี</span>
+        <input type="text" name="username" value="{{ form.username }}" required minlength="4" maxlength="20" pattern="[A-Za-z0-9_.]{4,20}" autocomplete="username">
+      </label>
+      <label class="field">
+        <span>อีเมล</span>
+        <input type="email" name="email" value="{{ form.email }}" required autocomplete="email">
+      </label>
+      <div class="row-2">
+        <label class="field">
+          <span>รหัสผ่าน</span>
+          <input type="password" name="password" required minlength="8" autocomplete="new-password">
+        </label>
+        <label class="field">
+          <span>รหัสผ่านอีกครั้ง</span>
+          <input type="password" name="confirm" required minlength="8" autocomplete="new-password">
+        </label>
+      </div>
+      <div class="field">
+        <span>ป้อนรหัสจากรูปภาพ</span>
+        <div class="captcha-row">
+          <img id="captcha-img" src="{{ url_for('captcha') }}" alt="รหัสยืนยันตัวตน" width="210" height="70">
+          <button type="button" class="btn ghost sm" id="captcha-refresh">เปลี่ยนรูป</button>
+        </div>
+        <input type="text" name="captcha" required maxlength="5" placeholder="พิมพ์ตัวอักษร 5 ตัวตามรูป" class="captcha-input" autocomplete="off">
+      </div>
+      <button class="btn primary block" type="submit">สร้างบัญชี</button>
+    </form>
+    <p class="muted center switch-link">มีบัญชีอยู่แล้ว <a href="{{ url_for('login') }}">เข้าสู่ระบบ</a></p>
+  </section>
+</div>
+<script>
+  document.getElementById("captcha-refresh").addEventListener("click", function () {
+    document.getElementById("captcha-img").src = "{{ url_for('captcha') }}?t=" + Date.now();
+  });
+</script>
+{% endblock %}
