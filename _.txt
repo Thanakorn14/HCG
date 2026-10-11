@@ -1,0 +1,16 @@
+HCG-Form/
+├── app.py
+├── requirements.txt
+├── style.css
+├── base.html
+├── login.html
+├── register.html
+├── home.html
+├── history.html
+├── fill_form.html
+├── submission.html
+├── admin_dashboard.html
+├── admin_forms.html
+├── admin_form_new.html
+├── admin_submissions.html
+└── admin_timeline.html
